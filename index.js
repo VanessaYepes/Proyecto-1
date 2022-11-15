@@ -1,8 +1,13 @@
 //const express = require('express')  este manera antigua de importacion commonjs
 import {calculatorLogic} from "./services.js" 
 import Express from 'express' //manera nueva es6 --> usar esta
+import dbConnection from "./connection/db.js" //no lleva corchete porque es un defaul
+import dotenv from "dotenv"
+
+dotenv.config();
 const app = Express()
 const port = 3000
+dbConnection() //se arranca conexion a la base de datos
 
 app.use(Express.json()); //Siempre entran json como entrada 
 
@@ -30,12 +35,12 @@ app.post("/calculadora",(req,res)=>{ //res--> respuesta o salida , req--> entrad
     console.log("fin  de ejecucion del controlador calculadora")
   }
   catch( error ) {
-    console.error(error.messange, "controller")
-    res.status(400).send("error en el cuerpo de la peticion")
+    //console.error(error.message, "controller")
+    res.status(400).send(`${ error.message } `)
   }
 })
 
 
 app.listen(port, () => { //para levantar el servidor 
-  console.log(`Example app listening on port ${port}`)
+  console.log(`Example app listening on port ${port}`) //sincrono
 })

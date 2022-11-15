@@ -1,3 +1,5 @@
+ import operaciones from "./models/operaciones.js"
+
 //creo un objeto
 const opt = {
     suma:"+",
@@ -16,14 +18,28 @@ export const calculatorLogic = (req) => { //orquestador
     try {
         console.log("inicio de ejecucion del calculatorLogic")
         validateData(operacion,numero1,numero2)
-        const response = executeOpt( numero1, numero2, operacion ) 
+        const response = executeOpt( numero1, numero2, operacion )
+        
+        //añade un nuevo registro a la base de datos
+        operaciones.create({
+            numero1 , //como la clave se llama igual que el valor se puede solo dejar uno de los dos y se asigna la clave al valor
+            numero2: numero2,
+            operacion: operacion,
+            resultado: response
+        })
+        .then(()=>{
+            console.log("creacion exitosa")
+        })
+        .catch((error)=> {
+            console.log(error.message)
+        })
         console.log("fin de ejecucion calculatorLogic")
         return response
     }
 
     catch (error) { //entra el trow 
         console.error("fallo en la ejecucíon ARRIBA", error.message)
-        throw new Error(error.message) //revienta el try ingresandolo al catch
+        throw new Error(`${ error.message } `) //revienta el try ingresandolo al catch `${}` pasa a string una variable
     }
    
 } 
