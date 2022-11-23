@@ -8,7 +8,7 @@ const opt = {
     divi:"/",
 }
 
-export const calculatorLogic = (req) => { //orquestador
+export const calculatorLogic = async (req) => { //orquestador
 
     const {operacion}= req.body //le asigna en req.body.operacion
     const {numero1}=req.body //le asigna a numero1 a req.bode.numero1
@@ -21,7 +21,7 @@ export const calculatorLogic = (req) => { //orquestador
         const response = executeOpt( numero1, numero2, operacion )
         
         //añade un nuevo registro a la base de datos
-        operaciones.create({
+        await operaciones.create({
             numero1 , //como la clave se llama igual que el valor se puede solo dejar uno de los dos y se asigna la clave al valor
             numero2: numero2,
             operacion: operacion,
@@ -43,6 +43,25 @@ export const calculatorLogic = (req) => { //orquestador
     }
    
 } 
+
+export const getAllOperations = async () => {
+    const baseDatos = await operaciones.find({});
+        return baseDatos
+}
+
+
+export const delateData = async(req) => {
+    const {operacion}= req.body //le asigna en req.body.operacion
+    return await operaciones.deleteMany({operacion})
+        .then( ()=>{
+        return true
+    })
+        .catch((error)=> {
+        console.log("entro al catch")
+        return false
+    })
+
+}
 
 const validateData = ( operacion, numero1, numero2 ) => {
     console.log("inicio de ejecucion del validateData")

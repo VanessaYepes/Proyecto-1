@@ -20,6 +20,6 @@ const operacionesSchema = new Schema({
         type: Number,
         required: true
     }
-  });
+  }, { versionKey: false });
 
 export default model('Operaciones',operacionesSchema);
