@@ -63,6 +63,25 @@ export const delateData = async(req) => {
 
 }
 
+export const buscar= async(req) => {
+    const {_id} =req.body 
+    const{numero1}=req.body
+    const{operacion}=req.body
+    const{numero2}=req.body
+    return await operaciones.findByIdAndUpdate(_id, {
+        numero1 ,
+        operacion,
+        numero2 : numero2
+    })
+        .then(() => {
+            return true
+        })
+        .catch(()=> {
+            return false
+        })
+
+}
+
 const validateData = ( operacion, numero1, numero2 ) => {
     console.log("inicio de ejecucion del validateData")
 

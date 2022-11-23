@@ -1,5 +1,5 @@
 //const express = require('express')  este manera antigua de importacion commonjs
-import {calculatorLogic,getAllOperations,delateData} from "./services.js" 
+import {calculatorLogic,getAllOperations,delateData, buscar} from "./services.js" 
 import Express from 'express' //manera nueva es6 --> usar esta
 import dbConnection from "./connection/db.js" //no lleva corchete porque es un defaul
 import dotenv from "dotenv"
@@ -40,6 +40,19 @@ app.delete("/calculadora", async(req, res)=> {
   else {
     res.status(400).send('Fallo en la eliminacion de los  datos')
    }
+
+})
+
+app.patch("/calculadora", async(req,res)=>{
+  const id= await buscar(req)
+  console.log(id)
+  if (id){
+    res.status(200).send('modificado exitosamente') 
+  }
+  else {
+    res.status(400).send('Fallo en la modificacion de los  datos')
+  }
+
 
 })
 
